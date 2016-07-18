@@ -1,0 +1,10 @@
+= link_to t(:back_to_orders), request.referer
+%h4
+  = t(:order, order: @confirm_presenter.order.id)
+  %span.order-state= @confirm_presenter.order.state.humanize
+.row
+  .col-xs-12
+    =render 'order_items/header'
+    =render partial: 'orders/order_item', collection: @confirm_presenter.order.order_items
+.row.totals-for-order-show
+  =render 'orders/total_price'

@@ -1,0 +1,16 @@
+.thumbnail.col-xs-12.order-item
+  .col-xs-7.item
+    .col-xs-2
+      %img.img-rounded.center-block{ src: order_item.book.image.order.url }
+    .col-xs-10
+      = link_to order_item.book.title, main_app.book_path(order_item.book)
+      %p= order_item.book.short_desc.truncate(100)
+  .col-xs-5.item
+    .col-xs-4.text-center
+      %span.price= order_item.currency_price
+    .col-xs-4
+      = number_field_tag "quantity[#{order_item.id}]", order_item.quantity, class: 'form-control'
+    .col-xs-3.text-center
+      %span.total= order_item.price_total
+    .col-xs-1= link_to 'x', order_item_path(order_item), method: :delete, class: 'btn'
+

@@ -1,0 +1,5 @@
+.pull-right
+  %h4.text-center= t(:order_summary)
+  %p= t(:item_total, sub_total: @presenter.price(:sub_total_price))
+  %p= t(:shipping_template, shipping: @presenter.price(:shipping_price))
+  %p= t(:order_total_template, total: @presenter.price(:total_price))

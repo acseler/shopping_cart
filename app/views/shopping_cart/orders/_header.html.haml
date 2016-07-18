@@ -1,0 +1,10 @@
+.row
+  .col-xs-2
+    %h3= t(:checkout).humanize
+  .col.xs-10
+    %ul.step-list
+      = @presenter.address_title
+      = @presenter.delivery_title
+      = @presenter.payment_title
+      = @presenter.confirm_title
+      = @presenter.complete_title

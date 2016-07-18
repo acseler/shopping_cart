@@ -1,0 +1,10 @@
+.row
+  .col-xs-12
+    %h4= t(:orders)
+- unless @presenter.orders_empty?
+  = render 'order_in_progress'
+  = render 'history_orders', type: :in_queue
+  = render 'history_orders', type: :in_delivery
+  = render 'history_orders', type: :delivered
+- else
+  %h4= @presenter.empty_orders

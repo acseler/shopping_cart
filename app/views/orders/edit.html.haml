@@ -1,0 +1,6 @@
+.row
+  .col-xs-12
+    %h4.text-center= @presenter.header
+    - if @presenter.has_items
+      = render 'order_items/header'
+      = render 'order_items/order_items_form'

@@ -1,0 +1,18 @@
+%h4= title
+.row
+  .col-xs-12
+    .col-xs-3
+      =render 'confirm_address', type: :shipping_address
+    .col-xs-3
+      =render 'confirm_address', type: :billing_address
+    .col-xs-3
+      =render 'confirm_delivery'
+    .col-xs-3
+      =render 'confirm_payment'
+.row
+  .col-xs-12
+    =render 'order_items/header'
+    =render partial: 'orders/order_item', collection: @confirm_presenter.items
+.row.totals-for-order-show
+  .col-xs-12
+    =render 'orders/total_price'

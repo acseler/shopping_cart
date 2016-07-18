@@ -1,0 +1,7 @@
+%h4= t(type).humanize
+%div{class: type}
+  %p= @confirm_presenter.name(type)
+  %p= @confirm_presenter.street(type)
+  %p= @confirm_presenter.city(type)
+  %p= @confirm_presenter.country(type)
+  %p= @confirm_presenter.phone(type)

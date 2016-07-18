@@ -1,0 +1,12 @@
+- unless @presenter.items_empty?
+  .col-xs-12
+    .underlined= t(:in_progress)
+    = render 'order_items/header'
+    = render partial: 'orders/order_item', collection: @presenter.items
+  .col-xs-12.current-order-footer
+    .col-xs-6
+      .pull-left
+        = @presenter.go_to_cart_link
+    .col-xs-6
+      .pull-right
+        = @presenter.sub_total

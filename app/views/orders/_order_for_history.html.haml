@@ -1,0 +1,5 @@
+.col-xs-9
+  .col-xs-4.text-center.id= order.id
+  .col-xs-4.text-center.date= order.completed_date.strftime("%Y-%d-%m")
+  .col-xs-2.text-center.price= order.total
+  .col-xs-2.text-center= link_to t(:view), order_path(order)
