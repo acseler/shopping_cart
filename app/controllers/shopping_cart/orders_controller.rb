@@ -79,7 +79,7 @@ module ShoppingCart
     end
 
     def index
-      @presenter = OrdersHistoryPresenter.new(customer: customer.decorate)
+      @presenter = OrdersHistoryPresenter.new(customer: customer)
                        .attach_controller(self)
     end
 

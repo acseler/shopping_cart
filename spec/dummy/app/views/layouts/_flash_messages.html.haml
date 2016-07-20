@@ -1,0 +1,8 @@
+.row
+  .col-xs-12
+    - flash.each do |message_type, message|
+      .alert{ class: "alert-#{message_type}" }
+        - if message.respond_to? :each
+          = message.join(', ')
+        - else
+          = message

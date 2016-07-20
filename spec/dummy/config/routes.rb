@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
-
-  mount ShoppingCart::Engine => "/shopping_cart"
+  devise_for :users
+  mount ShoppingCart::Engine => '/cart'
+  root 'home#index'
+  resources :books, only: :index
+  resources :customers, only: :edit
 end

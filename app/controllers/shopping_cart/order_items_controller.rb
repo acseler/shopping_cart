@@ -16,7 +16,7 @@ module ShoppingCart
     def edit
       @presenter = EditOrderPresenter.new(order: @order.decorate)
                        .attach_controller(self)
-      render 'orders/edit'
+      render 'shopping_cart/orders/edit'
     end
 
     def update
@@ -36,7 +36,7 @@ module ShoppingCart
 
     def destroy_all
       @order.order_items.delete_all
-      redirect_to root_path
+      redirect_to main_app.root_path
     end
   end
 end

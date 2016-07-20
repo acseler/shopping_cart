@@ -11,10 +11,53 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160715130327) do
+ActiveRecord::Schema.define(version: 20160719124054) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "addresses", force: :cascade do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "street"
+    t.string   "city"
+    t.string   "zip"
+    t.string   "phone"
+    t.integer  "country_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "addresses", ["country_id"], name: "index_addresses_on_country_id", using: :btree
+
+  create_table "books", force: :cascade do |t|
+    t.string   "title"
+    t.text     "short_desc"
+    t.text     "full_desc"
+    t.string   "image"
+    t.decimal  "price",      precision: 8, scale: 2
+    t.integer  "stock",                              default: 0
+    t.integer  "sells",                              default: 0
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+  end
+
+  create_table "countries", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "customers", force: :cascade do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "image"
+    t.integer  "billing_address_id"
+    t.integer  "shipping_address_id"
+    t.integer  "user_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
 
   create_table "shopping_cart_coupons", force: :cascade do |t|
     t.integer  "per_cent"
@@ -44,13 +87,12 @@ ActiveRecord::Schema.define(version: 20160715130327) do
     t.decimal  "price",      precision: 8, scale: 2
     t.integer  "quantity"
     t.integer  "book_id"
-    t.string   "book_type"
     t.integer  "order_id"
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
   end
 
-  add_index "shopping_cart_order_items", ["book_type", "book_id"], name: "index_shopping_cart_order_items_on_book_type_and_book_id", using: :btree
+  add_index "shopping_cart_order_items", ["book_id"], name: "index_shopping_cart_order_items_on_book_id", using: :btree
   add_index "shopping_cart_order_items", ["order_id"], name: "index_shopping_cart_order_items_on_order_id", using: :btree
 
   create_table "shopping_cart_orders", force: :cascade do |t|
@@ -70,4 +112,23 @@ ActiveRecord::Schema.define(version: 20160715130327) do
     t.datetime "updated_at",                                                null: false
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.inet     "current_sign_in_ip"
+    t.inet     "last_sign_in_ip"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+  end
+
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+
+  add_foreign_key "addresses", "countries"
 end

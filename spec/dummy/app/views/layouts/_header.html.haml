@@ -1,0 +1,25 @@
+%nav.navbar.navbar-default
+  .container
+    .navbar-header
+      .navbar-brand= link_to 'Bookstore', main_app.root_path
+      %button.navbar-toggle.collapsed{ 'data-toggle': 'collapse', type: 'button',
+       'data-target': '#main-menu', 'aria-expanded': 'false' }
+        %span.sr-only Toggle navigation
+        - 3.times do
+          %span.icon-bar
+    #main-menu.collapse.navbar-collapse
+      %ul.nav.navbar-nav.pull-right
+        %li{class: active_class(main_app.root_path)}
+          =link_to t(:home), main_app.root_path
+        %li{class: shop_active}
+          =link_to t(:shop), main_app.books_path
+        %li
+          %a{ href: @order.nil? ? main_app.new_user_session_path : shopping_cart.edit_order_items_path }
+            %span= basket_items(@order.try(:decorate))
+        - if user_signed_in?
+          %li= link_to t(:orders), shopping_cart.orders_path
+          %li= link_to t(:settings), main_app.edit_customer_path(current_user.customer)
+          %li= link_to t(:sign_out), main_app.destroy_user_session_path, method: :delete
+        - else
+          %li= link_to t(:sign_in), main_app.new_user_session_path
+          %li= link_to t(:sign_up), main_app.new_user_registration_path

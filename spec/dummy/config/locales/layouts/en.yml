@@ -1,0 +1,10 @@
+en:
+  home: 'Home'
+  categories: 'Categories'
+  sign_in: 'Sign in'
+  sign_up: 'Sign up'
+  sign_out: 'Sign out'
+  settings: 'Settings'
+  cart: 'Cart'
+  empty: 'EMPTY'
+  orders: 'Orders'

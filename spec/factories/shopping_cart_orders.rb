@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :order do
+  factory :order, class: 'ShoppingCart::Order' do
     total_price { FFaker.numerify('###.##') }
     sub_total_price { FFaker.numerify('##.##') }
     shipping_price { FFaker.numerify('##.##') }
