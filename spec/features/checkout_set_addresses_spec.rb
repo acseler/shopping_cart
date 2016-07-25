@@ -45,6 +45,7 @@ feature 'Checkout addresses' do
     expect(page).to have_css('h4', text: t(:shipping_address))
     expect(page).to have_css('h4', text: t(:order_summary))
     expect(page).to have_css('ul.step-list')
+    expect(page).to have_css('li', text: 'ADDRESS')
     expect(page).to have_css('li span.checkout-element.underlined', text: t(:address))
     expect(page).to have_css('form input.form-control', count: 12)
     expect(page).to have_css('form select.form-control', count: 2)

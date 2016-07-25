@@ -11,8 +11,8 @@
       =render 'confirm_payment'
 .row
   .col-xs-12
-    =render 'order_items/header'
-    =render partial: 'orders/order_item', collection: @confirm_presenter.items
+    =render 'shopping_cart/order_items/header'
+    =render partial: 'shopping_cart/orders/order_item', collection: @confirm_presenter.items
 .row.totals-for-order-show
   .col-xs-12
-    =render 'orders/total_price'
+    =render 'shopping_cart/orders/total_price'

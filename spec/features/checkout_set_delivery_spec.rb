@@ -7,7 +7,7 @@ feature 'Assign delivery' do
   let(:user) { customer.user }
   let(:order) { customer.order_in_proggress.decorate }
   let(:default_delivery) { order.delivery }
-  let(:delivery_to_select) { Delivery.first.decorate }
+  let(:delivery_to_select) { ShoppingCart::Delivery.first.decorate }
 
   before do
     FactoryGirl.create(:delivery)

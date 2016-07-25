@@ -5,4 +5,4 @@
         = t(type)
     .col-xs-12
       = render 'order_header'
-      = render partial: 'orders/order_for_history', collection: @presenter.send(type), as: :order
+      = render partial: 'shopping_cart/orders/order_for_history', collection: @presenter.send(type), as: :order

@@ -4,7 +4,7 @@
   %span.order-state= @confirm_presenter.order.state.humanize
 .row
   .col-xs-12
-    =render 'order_items/header'
-    =render partial: 'orders/order_item', collection: @confirm_presenter.order.order_items
+    =render 'shopping_cart/order_items/header'
+    =render partial: 'shopping_cart/orders/order_item', collection: @confirm_presenter.order.order_items
 .row.totals-for-order-show
-  =render 'orders/total_price'
+  =render 'shopping_cart/orders/total_price'

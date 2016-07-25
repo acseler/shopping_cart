@@ -16,7 +16,7 @@ module FeatureHelper
 
   def go_to_checkout
     sign_in_as_user
-    visit edit_order_items_path
+    visit shopping_cart.edit_order_items_path
     click_link('CHECKOUT')
     expect(page).to have_css('h3', text: 'Checkout')
   end

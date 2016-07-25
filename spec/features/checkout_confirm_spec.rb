@@ -37,6 +37,7 @@ feature 'Order confirmation' do
   def go_to_confirm
     click_button(t(:save_and_continue))
     click_button(t(:save_and_continue))
+    expect(page).to have_css('h4', text: 'CREDIT CARD')
     fill_in_card
     click_button(t(:save_and_continue))
   end

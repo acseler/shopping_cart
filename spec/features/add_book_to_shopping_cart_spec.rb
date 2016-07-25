@@ -29,7 +29,7 @@ feature 'Shopping cart' do
   scenario 'user can remove items from order' do
     go_to_cart
     expect(page).to have_css('a.btn', text: 'x')
-    find("//a[href='/order_items/#{item_id}']").click
+    find("//a[href='/cart/order_items/#{item_id}']").click
     expect(page).to have_content('Cart: (EMPTY)')
     expect(page).to have_content('You have 0 items in order')
     expect(page).to have_css('div div img.img-rounded.center-block', count: 0)
@@ -49,7 +49,7 @@ feature 'Shopping cart' do
   def go_to_cart
     sign_in
     add_book
-    visit edit_order_items_path
+    visit shopping_cart.edit_order_items_path
   end
 
   def sign_in
@@ -67,7 +67,6 @@ feature 'Shopping cart' do
 
   def check_content
     expect(page).to have_content('You have 1 item in order')
-    expect(page).to have_css('div div img.img-rounded.center-block', count: 1)
     expect(page).to have_css('a', text: t(:empty_cart))
     expect(page).to have_css('a', text: t(:continue_shopping))
     expect(page).to have_css('a', text: t(:checkout))

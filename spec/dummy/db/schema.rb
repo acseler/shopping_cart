@@ -28,8 +28,6 @@ ActiveRecord::Schema.define(version: 20160719124054) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "addresses", ["country_id"], name: "index_addresses_on_country_id", using: :btree
-
   create_table "books", force: :cascade do |t|
     t.string   "title"
     t.text     "short_desc"
@@ -130,5 +128,4 @@ ActiveRecord::Schema.define(version: 20160719124054) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
-  add_foreign_key "addresses", "countries"
 end

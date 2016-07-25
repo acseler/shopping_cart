@@ -20,4 +20,8 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  sign_out: 'Sign out'
+  shop: 'Shop'
+  add_to_cart: 'ADD TO CART'
+  cart: 'Cart'
+  empty: 'EMPTY'

@@ -29,7 +29,7 @@ feature 'Order history' do
     customer.orders = []
     customer.orders << ShoppingCart::Order.new
     sign_in_as_user
-    visit orders_path
+    visit shopping_cart.orders_path
     expect(page).to have_css('h4', text: t(:you_have_no_orders))
   end
 

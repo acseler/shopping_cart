@@ -1,0 +1,6 @@
+%a{href: main_app.book_path(book) }
+  .card
+    .card-img
+      .card-block.center-block
+        %h4.book-title.text-center= truncate(book.title, length: 50, separator: ' ')
+        %p.book-price.text-center= book.price

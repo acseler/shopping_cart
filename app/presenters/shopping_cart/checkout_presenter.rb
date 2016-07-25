@@ -65,7 +65,7 @@ module ShoppingCart
     private
 
     def current_path
-      request.env['PATH_INFO']
+      "/cart#{request.env['PATH_INFO']}"
     end
 
     def underlined_title(title)

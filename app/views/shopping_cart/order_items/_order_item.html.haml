@@ -1,7 +1,5 @@
 .thumbnail.col-xs-12.order-item
   .col-xs-7.item
-    .col-xs-2
-      %img.img-rounded.center-block{ src: order_item.book.image.order.url }
     .col-xs-10
       = link_to order_item.book.title, main_app.book_path(order_item.book)
       %p= order_item.book.short_desc.truncate(100)
