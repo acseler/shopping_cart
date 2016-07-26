@@ -1,6 +1,6 @@
 module ShoppingCart
   class OrderItemsController < ApplicationController
-    before_action :authenticate_user!
+    load_and_authorize_resource
     after_action :update_order_price, only: [:create, :update, :destroy]
 
     def create

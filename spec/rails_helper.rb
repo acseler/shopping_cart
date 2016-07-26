@@ -10,14 +10,21 @@ require 'factory_girl_rails'
 require 'shoulda/matchers'
 require 'ffaker'
 require 'support/feature'
+require 'support/capybara'
+require 'support/controllers'
+require 'support/database_cleaner'
+require 'support/shared_examples'
+require 'support/controller'
 require 'capybara/rspec'
 require 'capybara/rails'
+require 'capybara-webkit'
 require 'capybara/webkit/matchers'
 ActiveRecord::Migration.maintain_test_schema!
 Capybara.javascript_driver = :webkit
 
 RSpec.configure do |config|
   include FeatureHelper
+  include ControllerHelper
 
   config.include AbstractController::Translation
   config.fixture_path = "#{::Rails.root}/spec/fixtures"

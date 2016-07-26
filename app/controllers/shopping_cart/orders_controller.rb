@@ -1,6 +1,6 @@
 module ShoppingCart
   class OrdersController < ApplicationController
-    before_action :authenticate_user!
+    load_and_authorize_resource
     before_action :assign_presenter, except: [:order_addresses,
                                               :delivery,
                                               :payment,

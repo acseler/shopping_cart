@@ -20,7 +20,7 @@ feature 'Assign delivery' do
     check_delivery_assignation
   end
 
-  scenario 'order summary changes on delivery changing' do
+  scenario 'order summary changes on delivery changing', js: true do
     go_to_checkout
     click_button(t(:save_and_continue))
     expect(page).to have_css('p.sub-total', text: price_in_view(order.sub_total_price))
