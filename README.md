@@ -1,7 +1,7 @@
 # ShoppingCart
 
 ### Integration
-Add `= yield :checkout` to your `layouts/application.html`. 
+Add `= stylesheet_link_tag 'shopping_cart/application'` and `= yield :checkout` to your `layouts/application.html`. 
 
 Add
 ```ruby
