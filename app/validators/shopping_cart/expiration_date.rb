@@ -1,17 +1,18 @@
 module ShoppingCart
   class ExpirationDate < ActiveModel::Validator
     def validate(record)
-      unless exp_date_presence(record)
-        if check_date(record)
-          record.errors[:expiraton_date] << I18n.t(:wrong_exp_date)
-        end
-      end
+      return unless record_valid?(record)
+      record.errors[:expiraton_date] << I18n.t(:wrong_exp_date)
     end
 
     private
 
+    def record_valid?(record)
+      exp_date_presence(record) && check_date(record)
+    end
+
     def exp_date_presence(record)
-      record.exp_month.blank? && record.exp_year.blank?
+      !(record.exp_month.blank? && record.exp_year.blank?)
     end
 
     def check_date(record)

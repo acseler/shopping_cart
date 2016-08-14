@@ -1,19 +1,13 @@
 - content_for :checkout do
   = render 'header'
 
-%h4.col-xs-12= t(:credit_card)
-.row
-  .col-xs-6.credit-card
-    =form_for @payment_presenter.credit_card, url: {controller: 'orders', action: :payment}, method: :put do |f|
-      .form-group.col-xs-12
-        =f.text_field :number, { class: 'form-control', placeholder: t(:card_number) }
-      %p.col-xs-12= t(:expiration_date)
-      .col-xs-6
-        =@payment_presenter.month_select(f)
-      .col-xs-6
-        =@payment_presenter.year_select(f)
-      .form-group.col-xs-12
-        = f.text_field :code, { class: 'form-control', placeholder: t(:card_code) }
-        = f.submit t(:save_and_continue), class: 'btn btn-default'
-  .col-xs-6
-    = render 'order_summary'
+%h4= t(:credit_card)
+=form_for @payment_presenter.credit_card, url: {controller: 'orders', action: :payment}, method: :put do |f|
+  .payment
+    =f.text_field :number, { placeholder: t(:card_number) }
+    %p= t(:expiration_date)
+    =@payment_presenter.month_select(f)
+    =@payment_presenter.year_select(f)
+    = f.text_field :code, { placeholder: t(:card_code) }
+    = f.submit t(:save_and_continue)
+= render 'order_summary'

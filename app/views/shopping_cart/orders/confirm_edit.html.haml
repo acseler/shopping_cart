@@ -2,7 +2,4 @@
   = render 'header'
 
 = render 'confirm_body', title: t(:confirm)
-.row
-  .col-xs-12
-    .pull-left
-      = button_to t(:place_order), place_order_path, method: :put, class: 'btn btn-primary'
+= button_to t(:place_order), place_order_path, method: :put

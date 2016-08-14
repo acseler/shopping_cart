@@ -33,12 +33,11 @@ module ShoppingCart
     def empty_cart_link
       link_to t(:empty_cart),
               delete_order_items_path,
-              method: :delete,
-              class: 'btn btn-sm btn-default'
+              method: :delete
     end
 
     def continue_shopping_link
-      link_to t(:continue_shopping), main_app.books_path, class: 'btn btn-sm btn-default'
+      link_to t(:continue_shopping), main_app.root_path
     end
   end
 end

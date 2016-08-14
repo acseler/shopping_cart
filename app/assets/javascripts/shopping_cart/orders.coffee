@@ -1,5 +1,4 @@
 $(document).ready ->
-  console.log("hello")
   $(':checkbox').change ->
     if $('#use_billing_address_check').is(':checked')
       console.log('CHECKED')

@@ -8,7 +8,7 @@ module ShoppingCart
       it { should validate_presence_of(symb) }
     end
 
-    %i(book order).each do |symb|
+    %i(product order).each do |symb|
       it { should belong_to(symb) }
     end
 

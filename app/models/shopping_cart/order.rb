@@ -33,9 +33,9 @@ module ShoppingCart
 
     has_many :order_items, dependent: :delete_all
     accepts_nested_attributes_for :order_items
-    belongs_to :billing_address, class_name: ShoppingCart.address_class,
+    belongs_to :billing_address, class_name: 'ShoppingCart::Address',
                foreign_key: 'billing_address_id'
-    belongs_to :shipping_address, class_name: ShoppingCart.address_class,
+    belongs_to :shipping_address, class_name: 'ShoppingCart::Address',
                foreign_key: 'shipping_address_id'
     belongs_to :customer, polymorphic: true
     belongs_to :delivery
@@ -52,10 +52,6 @@ module ShoppingCart
 
     def calculate_total
       update(sub_total_price: items_sum, total_price: total_sum)
-    end
-
-    def self.order_in_proggress
-      in_progress.first
     end
 
     private

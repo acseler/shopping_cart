@@ -24,7 +24,7 @@ module ApplicationHelper
   end
 
   def empty_cart
-    "#{t(:cart)}: #{t(:empty)}"
+    "#{t(:cart)}: (#{t(:empty)})"
   end
 
   def not_empty_cart(order)

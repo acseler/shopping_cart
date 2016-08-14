@@ -8,7 +8,6 @@ module ShoppingCart
     private
 
     def confirm_order
-      update_book_stock
       order_to_queue
       assign_new_order
     end
@@ -20,14 +19,8 @@ module ShoppingCart
     end
 
     def assign_new_order
-      customer.orders << Order.new
-      customer.save
-    end
-
-    def update_book_stock
-      order.order_items.each do |item|
-        item.update_book_stock
-      end
+      user.orders << Order.new
+      user.save
     end
   end
 end

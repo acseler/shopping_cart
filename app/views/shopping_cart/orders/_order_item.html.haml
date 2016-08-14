@@ -1,12 +1,10 @@
-.col-xs-12.order-item-history
-  .col-xs-7.item
-    .col-xs-10
-      %p= order_item.book.title
-      %p= order_item.book.short_desc.truncate(100)
-  .col-xs-5.item
-    .col-xs-4.text-center
-      %span.price= order_item.currency_price
-    .col-xs-3.text-center
-      %span= order_item.quantity
-    .col-xs-4.text-center
-      %span.total= order_item.price_total
+.items
+  %p
+    = order_item.product.title
+  %p
+    %span= order_item.currency_price
+  %p
+    %span= order_item.quantity
+  %p
+    %span= order_item.price_total
+  %p

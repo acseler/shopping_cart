@@ -11,12 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160719124054) do
+ActiveRecord::Schema.define(version: 20160810131417) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "addresses", force: :cascade do |t|
+  create_table "books", force: :cascade do |t|
+    t.string   "title"
+    t.decimal  "price",      precision: 8, scale: 2
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
+
+  create_table "magazines", force: :cascade do |t|
+    t.string   "title"
+    t.decimal  "price",      precision: 8, scale: 2
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
+
+  create_table "shopping_cart_addresses", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
     t.string   "street"
@@ -28,33 +42,10 @@ ActiveRecord::Schema.define(version: 20160719124054) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "books", force: :cascade do |t|
-    t.string   "title"
-    t.text     "short_desc"
-    t.text     "full_desc"
-    t.string   "image"
-    t.decimal  "price",      precision: 8, scale: 2
-    t.integer  "stock",                              default: 0
-    t.integer  "sells",                              default: 0
-    t.datetime "created_at",                                     null: false
-    t.datetime "updated_at",                                     null: false
-  end
-
-  create_table "countries", force: :cascade do |t|
+  create_table "shopping_cart_countries", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "customers", force: :cascade do |t|
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "image"
-    t.integer  "billing_address_id"
-    t.integer  "shipping_address_id"
-    t.integer  "user_id"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
   end
 
   create_table "shopping_cart_coupons", force: :cascade do |t|
@@ -82,15 +73,15 @@ ActiveRecord::Schema.define(version: 20160719124054) do
   end
 
   create_table "shopping_cart_order_items", force: :cascade do |t|
-    t.decimal  "price",      precision: 8, scale: 2
-    t.integer  "quantity"
-    t.integer  "book_id"
+    t.decimal  "price",        precision: 8, scale: 2
+    t.integer  "quantity",                             default: 1
+    t.integer  "product_id"
+    t.string   "product_type"
     t.integer  "order_id"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
   end
 
-  add_index "shopping_cart_order_items", ["book_id"], name: "index_shopping_cart_order_items_on_book_id", using: :btree
   add_index "shopping_cart_order_items", ["order_id"], name: "index_shopping_cart_order_items_on_order_id", using: :btree
 
   create_table "shopping_cart_orders", force: :cascade do |t|

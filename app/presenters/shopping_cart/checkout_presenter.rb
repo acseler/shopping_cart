@@ -16,6 +16,7 @@ module ShoppingCart
         when delivery_order_path
           underlined_title(:delivery)
         when addresses_order_path
+          return link_title(:delivery, delivery_order_path) if delivery?
           simple_title(:delivery)
         else
           link_title(:delivery, delivery_order_path)
@@ -29,6 +30,7 @@ module ShoppingCart
         when confirm_order_path
           link_title(:payment, payment_order_path)
         else
+          return link_title(:payment, payment_order_path) if payment?
           simple_title(:payment)
       end
     end
@@ -38,6 +40,7 @@ module ShoppingCart
         when confirm_order_path
           underlined_title(:confirm)
         else
+          return link_title(:confirm, confirm_order_path) if confirm?
           simple_title(:confirm)
       end
     end
@@ -59,13 +62,13 @@ module ShoppingCart
     end
 
     def price(name)
-      number_to_currency(order.send(name))
+      number_to_currency(order.public_send(name))
     end
 
     private
 
     def current_path
-      "/cart#{request.env['PATH_INFO']}"
+      request.env['REQUEST_PATH']
     end
 
     def underlined_title(title)
@@ -76,7 +79,7 @@ module ShoppingCart
 
     def link_title(title, path)
       content_tag :li do
-        link_to t(title), path, class: 'checkout-element', "data-no-turbolink" => true
+        link_to t(title), path, class: 'checkout-element',  "data-no-turbolink" => true
       end
     end
 
@@ -84,6 +87,22 @@ module ShoppingCart
       content_tag :li do
         content_tag :span, t(title), class: 'checkout-element'
       end
+    end
+
+    def address?
+      order.billing_address && order.shipping_address
+    end
+
+    def delivery?
+      order.delivery
+    end
+
+    def payment?
+      order.credit_card
+    end
+
+    def confirm?
+      address? && delivery? && payment?
     end
   end
 end

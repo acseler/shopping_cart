@@ -10,12 +10,11 @@ class Ability
     can :read
     can :manage, ShoppingCart::Order
     can :manage, ShoppingCart::OrderItem
-    can :manage, Customer
     can :manage, User
   end
 
   def guest_abilities
-    can :read, [Book]
+    can :read, [Book, Magazine]
   end
 
 end

@@ -8,8 +8,8 @@ module ShoppingCart
     attribute :order, Order
 
     validates :number, :exp_month, :exp_year, :code, presence: true
-    validates :number, format: {with: /\A[0-9]{12}\z/}, length: {is: 12}
-    validates :code, length: {in: (3..4)}, numericality: true
-    validates_with ShoppingCart::ExpirationDate
+    validates :number, format: { with: /\A[0-9]{16}\z/ }, length: { is: 16 }
+    validates :code, length: {in: (3..4) }, numericality: true
+    validates_with ExpirationDate
   end
 end

@@ -1,18 +1,9 @@
 %h4= title
-.row
-  .col-xs-12
-    .col-xs-3
-      =render 'confirm_address', type: :shipping_address
-    .col-xs-3
-      =render 'confirm_address', type: :billing_address
-    .col-xs-3
-      =render 'confirm_delivery'
-    .col-xs-3
-      =render 'confirm_payment'
-.row
-  .col-xs-12
-    =render 'shopping_cart/order_items/header'
-    =render partial: 'shopping_cart/orders/order_item', collection: @confirm_presenter.items
-.row.totals-for-order-show
-  .col-xs-12
-    =render 'shopping_cart/orders/total_price'
+.confirm
+  =render 'confirm_address', type: :shipping_address
+  =render 'confirm_address', type: :billing_address
+  =render 'confirm_delivery'
+  =render 'confirm_payment'
+=render 'shopping_cart/order_items/header'
+=render partial: 'shopping_cart/orders/order_item', collection: @confirm_presenter.items
+=render 'shopping_cart/orders/total_price'

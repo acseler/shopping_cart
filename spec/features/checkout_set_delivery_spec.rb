@@ -3,9 +3,8 @@ require 'rails_helper'
 feature 'Assign delivery' do
   include ActionView::Helpers::NumberHelper
 
-  let(:customer) { FactoryGirl.create(:customer) }
-  let(:user) { customer.user }
-  let(:order) { customer.order_in_proggress.decorate }
+  let(:user) { FactoryGirl.create(:user) }
+  let(:order) { user.orders_in_progress.first.decorate }
   let(:default_delivery) { order.delivery }
   let(:delivery_to_select) { ShoppingCart::Delivery.first.decorate }
 
@@ -46,7 +45,7 @@ feature 'Assign delivery' do
     click_button(t(:save_and_continue))
     expect(page).to have_css('a.checkout-element', text: t(:address))
     expect(page).to have_css('a.checkout-element', text: t(:delivery))
-    expect(page).to have_css('span.checkout-element.underlined', text: t(:payment))
+    expect(page).to have_css('span.checkout-element', text: t(:payment))
     click_link(t(:delivery))
     expect(page).to have_selector("#{label_selector(delivery_to_select)} input[checked='checked']")
   end

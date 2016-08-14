@@ -38,5 +38,9 @@ module ShoppingCart
       @order.order_items.delete_all
       redirect_to main_app.root_path
     end
+
+    def update_order_price
+      @order.calculate_total
+    end
   end
 end

@@ -5,20 +5,17 @@ module ShoppingCart
 
     routes { ShoppingCart::Engine.routes }
 
-    let(:user) { customer.user }
-    let(:customer) { FactoryGirl.create(:customer) }
-    let(:order) { customer.order_in_proggress }
-    let(:billing_address) { customer.billing_address
-                                .attributes.merge(first_name: 'Vasya') }
-    let(:shipping_address) { customer.shipping_address
-                                 .attributes.merge(first_name: 'Petya') }
-    let(:use_billing_address) { { check: '0' } }
-    let(:params_addr) { {billing_address: billing_address,
-                         shipping_address: shipping_address,
+    let(:user) { FactoryGirl.create(:user) }
+    let(:order) { user.orders_in_progress.first }
+    let(:billing_address) { FactoryGirl.create(:address) }
+    let(:shipping_address) { FactoryGirl.create(:address) }
+    let(:use_billing_address) { {check: '0'} }
+    let(:params_addr) { {billing_address: billing_address.attributes,
+                         shipping_address: shipping_address.attributes,
                          use_billing_address: use_billing_address
     } }
     let(:delivery) { Delivery.last }
-    let(:params_delivery) { { delivery: { delivery_id: delivery.id } } }
+    let(:params_delivery) { {delivery: {delivery_id: delivery.id}} }
     let(:params_payment) { FactoryGirl.attributes_for(:credit_card) }
 
     context 'GET#order_addresses_edit' do
@@ -81,7 +78,7 @@ module ShoppingCart
 
       it_behaves_like 'user not authorized' do
         let(:action) { put :delivery,
-                           {delivery: { delivery_id: 1 }}.merge(id: order) }
+                           {delivery: {delivery_id: 1}}.merge(id: order) }
       end
     end
 
@@ -140,11 +137,11 @@ module ShoppingCart
       it 'changes order state to in_queue and create empty order instead' do
         sign_in_user
         expect(order.in_progress?).to be_truthy
-        expect{ put :confirm, id: order }
-            .to change(Customer.find(customer.id).orders, :count).by(1)
-        expect(Order.find(order.id).in_queue?).to be_truthy
-        expect(Customer.find(customer.id).order_in_proggress)
-            .not_to eq Order.find(order.id)
+        expect { put :confirm, id: order }
+            .to change(User.find(user.id).orders, :count).by(1)
+        expect(ShoppingCart::Order.find(order.id).in_queue?).to be_truthy
+        expect(User.find(user.id).orders_in_progress.first)
+            .not_to eq ShoppingCart::Order.find(order.id)
       end
 
       it_behaves_like 'user not authorized' do
@@ -165,53 +162,13 @@ module ShoppingCart
         order.credit_card = FactoryGirl.create(:credit_card)
         order.queue
         order.save
-        customer.orders << Order.new
+        user.orders << ShoppingCart::Order.new
         get :complete, id: order
         expect(response).to render_template :complete
       end
 
       it_behaves_like 'user not authorized' do
         let(:action) { get :complete, id: order }
-      end
-    end
-
-    context 'GET#index' do
-      it 'renders index template' do
-        sign_in_user
-        get :index, id: customer
-        expect(response).to render_template :index
-      end
-
-      it 'assigns presenter' do
-        sign_in_user
-        get :index, id: customer
-        expect(assigns(:presenter)).not_to be_nil
-      end
-
-      it_behaves_like 'user not authorized' do
-        let(:action) { get :index, id: customer }
-      end
-    end
-
-    context 'GET#show' do
-      it 'renders show template' do
-        sign_in_user
-        order.queue
-        order.save
-        get :show, id: order
-        expect(response).to render_template :show
-      end
-
-      it 'assigns confirm presenter' do
-        sign_in_user
-        order.queue
-        order.save
-        get :show, id: order
-        expect(assigns(:confirm_presenter)).not_to be_nil
-      end
-
-      it_behaves_like 'user not authorized' do
-        let(:action) { get :show, id: order }
       end
     end
   end

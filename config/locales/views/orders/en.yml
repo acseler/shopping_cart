@@ -52,3 +52,5 @@ en:
   you_have_no_orders: 'You have no orders'
   billing_address: 'BILLING ADDRESS'
   shipping_address: 'SHIPPING ADDRESS'
+  wrong_exp_date: "can't be less than current date"
+  please_select: 'Please Select'

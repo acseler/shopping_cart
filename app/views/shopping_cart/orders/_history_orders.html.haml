@@ -1,8 +1,0 @@
-.orders
-  - unless @presenter.send(type).empty?
-    .col-xs-12
-      .underlined
-        = t(type)
-    .col-xs-12
-      = render 'order_header'
-      = render partial: 'shopping_cart/orders/order_for_history', collection: @presenter.send(type), as: :order

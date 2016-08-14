@@ -3,7 +3,7 @@ module ShoppingCart
     attribute :billing_address, AddressForm
     attribute :shipping_address, AddressForm
     attribute :use_billing_address, Hash
-    attribute :order, Order
+    attribute :order, ShoppingCart::Order
     attribute :errors, Array
   end
 end

@@ -38,6 +38,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'devise'
   s.add_development_dependency 'haml-rails', '~> 0.9.0'
   s.add_development_dependency 'cancancan'
+  s.add_development_dependency 'pry'
 
 
   s.test_files = Dir['spec/**/*']

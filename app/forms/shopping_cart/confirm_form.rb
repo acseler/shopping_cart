@@ -1,6 +1,6 @@
 module ShoppingCart
   class ConfirmForm < Rectify::Form
     attribute :order, Order
-    attribute :customer, Customer
+    attribute :user, User
   end
 end

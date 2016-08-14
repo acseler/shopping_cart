@@ -5,12 +5,15 @@ module ShoppingCart
 
     routes { ShoppingCart::Engine.routes }
 
-    let(:customer) { FactoryGirl.create(:customer) }
-    let(:user) { customer.user }
+    let(:user) { FactoryGirl.create(:user) }
 
     context 'POST#create' do
       let(:book) { FactoryGirl.create(:book) }
-      let(:attributes) { FactoryGirl.attributes_for(:order_item, book_id: book) }
+      let(:attributes) { FactoryGirl.attributes_for(:order_item,
+                                                    quantity: 1,
+                                                    product_id: book,
+                                                    product_type: 'Book'
+      ) }
 
       it 'it add order_item' do
         sign_in_user
@@ -43,8 +46,8 @@ module ShoppingCart
           last.id => 222
       }} }
 
-      let(:first) { customer.order_in_proggress.order_items.first }
-      let(:last) { customer.order_in_proggress.order_items.last }
+      let(:first) { user.orders_in_progress.first.order_items.first }
+      let(:last) { user.orders_in_progress.first.order_items.last }
 
       it 'updates order items quantity' do
         sign_in_user
@@ -73,7 +76,7 @@ module ShoppingCart
     end
 
     context 'DELETE#destroy_all' do
-      let(:count_of_order_items) { customer.order_in_proggress.order_items.count }
+      let(:count_of_order_items) { user.orders_in_progress.first.order_items.count }
 
       it 'clear order items' do
         sign_in_user

@@ -1,5 +1,5 @@
 ShoppingCart::Engine.routes.draw do
-  resources :orders, only: [:index, :show] do
+  resources :orders do
     member do
       get 'addresses', action: 'order_addresses_edit'
       get 'delivery', action: 'delivery_edit'

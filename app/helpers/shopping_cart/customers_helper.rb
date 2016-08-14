@@ -19,28 +19,17 @@ module ShoppingCart
       addr = assign_address(address_name, form)
       ADDRESS_FIELDS.each do |field|
         result << address_text_field(field, form, addr)
-        result << country_select(form, addr) if field == :city
+        result << select_checkout(form, addr) if field == :city
       end
       result.html_safe
-    end
-
-    def draw_non_social_fields
-      return '' if current_user.provider
-      render 'customers/non_social_fields'
     end
 
     private
 
     def assign_address(address_name, form)
-      form ? address_checkout(address_name) : address_settings(address_name)
-    end
-
-    def address_settings(addr_name)
-      @presenter.customer.send(addr_name)
-    end
-
-    def address_checkout(addr_name)
-      @order.send(addr_name) || @address_presenter.customer.send(addr_name)
+      address = @order.send(address_name)
+      return @order.send(address_name) if address
+      @order.send("#{address_name}=", ShoppingCart::Address.create)
     end
 
     def for_merge(field, form, address)
@@ -50,38 +39,15 @@ module ShoppingCart
     end
 
     def address_text_field(field, form, address)
-      options = {class: 'form-control'}.merge(for_merge(field, form, address))
-      if form
-        checkout_field(form, field, options)
-      else
-        settings_field(field, options, address)
-      end
-    end
-
-    def settings_field(field, opt, address)
-      text_field_tag(field, address.send(field), opt)
-    end
-
-    def checkout_field(form, field, opt)
-      form.text_field(field, opt)
-    end
-
-    def country_select(form, address)
-      form ? select_checkout(form, address) : select_settings(address)
+      options = {class: 'block'}.merge(for_merge(field, form, address))
+      form.text_field(field, options)
     end
 
     def select_checkout(form, address)
       form.collection_select(:country_id,
                              @address_presenter.countries, :id, :name,
                              select_options(address),
-                             class: 'form-control')
-    end
-
-    def select_settings(address)
-      collection_select(nil, :country_id,
-                        @presenter.countries, :id, :name,
-                        select_options(address),
-                        class: 'form-control')
+                             class: 'block')
     end
 
     def selected_country(address)
@@ -89,7 +55,7 @@ module ShoppingCart
     end
 
     def select_options(address)
-      {selected: selected_country(address), include_blank: 'Please Select'}
+      {selected: selected_country(address), include_blank: t(:please_select)}
     end
   end
 end

@@ -3,14 +3,17 @@ require 'rails_helper'
 feature 'Checkout addresses' do
   include ActionView::Helpers::NumberHelper
 
-  let(:customer) { FactoryGirl.create(:customer) }
-  let(:user) { customer.user }
-  let(:order) { customer.order_in_proggress.decorate }
+  before do
+    FactoryGirl.create(:country, name: 'Ukraine')
+  end
+
+  let(:user) { FactoryGirl.create(:user) }
+  let(:order) { user.orders_in_progress.first.decorate }
   let(:street) { 'Korolenka' }
   let(:city) { 'Dnipro' }
-  let(:country) { Country.last.name }
-  let(:zip) { '1234567890' }
-  let(:phone) { '222-222-222' }
+  let(:country) { ShoppingCart::Country.last.name }
+  let(:zip) { '12345' }
+  let(:phone) { '+380551234567' }
 
   scenario 'user redirect to checkout addresses on checkout click' do
     go_to_checkout
@@ -46,9 +49,9 @@ feature 'Checkout addresses' do
     expect(page).to have_css('h4', text: t(:order_summary))
     expect(page).to have_css('ul.step-list')
     expect(page).to have_css('li', text: 'ADDRESS')
-    expect(page).to have_css('li span.checkout-element.underlined', text: t(:address))
-    expect(page).to have_css('form input.form-control', count: 12)
-    expect(page).to have_css('form select.form-control', count: 2)
+    expect(page).to have_css('li a.checkout-element', text: t(:address))
+    expect(page).to have_css("form input[type='text']", count: 12)
+    expect(page).to have_css('form select', count: 2)
     expect(page).to have_selector('input[name="use_billing_address[check]"]')
     expect(page).to have_selector('input[value="SAVE AND CONTINUE"]')
   end
@@ -94,7 +97,7 @@ feature 'Checkout addresses' do
 
   def check_delivery_and_back
     expect(page).to have_css('a.checkout-element', text: t(:address))
-    expect(page).to have_css('span.checkout-element.underlined', text: t(:delivery))
+    expect(page).to have_css('a.checkout-element', text: t(:delivery))
     click_link(t(:address))
   end
 end

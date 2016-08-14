@@ -1,0 +1,9 @@
+.book-item
+  %h4= truncate(magazine.title, length: 50, separator: ' ')
+  %p= magazine.price
+  - if current_user
+    = form_tag shopping_cart.add_order_items_path, method: :post, id: 'add' do
+      = hidden_field_tag :product_id, magazine.id
+      = hidden_field_tag :product_type, magazine.class
+      = hidden_field_tag :price, magazine.price
+      = submit_tag t(:add_to_cart), class: 'btn btn-default'

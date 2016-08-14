@@ -2,9 +2,8 @@ require 'rails_helper'
 
 feature 'Assign payment' do
 
-  let(:customer) { FactoryGirl.create(:customer) }
-  let(:user) {customer.user }
-  let(:order) { customer.order_in_proggress.decorate }
+  let(:user) { FactoryGirl.create(:user) }
+  let(:order) { user.orders_in_progress.first.decorate }
   let(:delivery_to_select) { order.delivery.decorate }
   let(:credit_card) { FactoryGirl.build(:credit_card) }
 
@@ -63,7 +62,7 @@ feature 'Assign payment' do
 
   def save_and_back
     click_button(t(:save_and_continue))
-    expect(page).to have_css('span.checkout-element.underlined', text: t(:confirm))
+    expect(page).to have_css('a.checkout-element', text: t(:confirm))
     expect(page).to have_css('a.checkout-element', text: t(:payment))
     click_link(t(:payment))
   end

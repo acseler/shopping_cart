@@ -5,14 +5,13 @@ module ShoppingCart
                                               :delivery,
                                               :payment,
                                               :confirm,
-                                              :complete,
-                                              :index]
-    before_action :check_order_items, except: [:complete, :index, :show]
-    before_filter :assign_previous_order, only: [:complete, :show]
+                                              :complete]
+    before_action :check_order_items, except: [:complete]
+    before_filter :assign_previous_order, only: [:complete]
 
     def order_addresses_edit
       @address_presenter = AddressPresenter.new(countries: Country.all,
-                                                customer: customer,
+                                                customer: current_user,
                                                 order: @order
       ).attach_controller(self)
     end
@@ -72,22 +71,10 @@ module ShoppingCart
 
     def confirm
       order = @order
-      form = ConfirmForm.new(order: order, customer: customer)
+      form = ConfirmForm.new(order: order, user: current_user)
       ConfirmOrder.call(form) do
         on(:ok) { redirect_to complete_order_path order }
       end
-    end
-
-    def index
-      @presenter = OrdersHistoryPresenter.new(customer: customer)
-                       .attach_controller(self)
-    end
-
-    def show
-      OrderShow.call(@prev_order) do
-        on(:wrong_order) { redirect_to orders_path }
-      end
-      @confirm_presenter = ConfirmPresenter.new(order: @prev_order)
     end
 
     private

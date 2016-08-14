@@ -7,11 +7,10 @@ feature 'Order confirmation' do
     FactoryGirl.create(:delivery)
   end
 
-  let(:customer) { FactoryGirl.create(:customer) }
-  let(:user) { customer.user }
-  let(:order) { customer.order_in_proggress.decorate }
+  let(:user) { FactoryGirl.create(:user) }
+  let(:order) { user.orders_in_progress.first.decorate }
   let(:default_delivery) { order.delivery }
-  let(:delivery_to_select) { Delivery.first.decorate }
+  let(:delivery_to_select) { ShoppingCart::Delivery.first.decorate }
   let(:credit_card) { FactoryGirl.build(:credit_card) }
 
   scenario 'user confirms order' do
@@ -53,45 +52,45 @@ feature 'Order confirmation' do
 
   def check_shipping_address
     expect(page).to have_css('h4', text: humanize(t(:shipping_address)))
-    expect(page).to have_css('.shipping_address p',
+    expect(page).to have_css('.confirm-inner p',
                              text: ship_addr.full_name)
-    expect(page).to have_css('.shipping_address p', text: ship_addr.street)
-    expect(page).to have_css('.shipping_address p', text: ship_addr.city)
-    expect(page).to have_css('.shipping_address p', text: ship_addr.country.name)
-    expect(page).to have_css('.shipping_address p', text: ship_addr.phone)
+    expect(page).to have_css('.confirm-inner p', text: ship_addr.street)
+    expect(page).to have_css('.confirm-inner p', text: ship_addr.city)
+    expect(page).to have_css('.confirm-inner p', text: ship_addr.country.name)
+    expect(page).to have_css('.confirm-inner p', text: ship_addr.phone)
   end
 
   def check_billing_address
     expect(page).to have_css('h4', text:  humanize(t(:billing_address)))
-    expect(page).to have_css('.billing_address p',
+    expect(page).to have_css('.confirm-inner p',
                              text: bill_addr.full_name)
-    expect(page).to have_css('.billing_address p', text: bill_addr.street)
-    expect(page).to have_css('.billing_address p', text: bill_addr.city)
-    expect(page).to have_css('.billing_address p', text: bill_addr.country.name)
-    expect(page).to have_css('.billing_address p', text: bill_addr.phone)
+    expect(page).to have_css('.confirm-inner p', text: bill_addr.street)
+    expect(page).to have_css('.confirm-inner p', text: bill_addr.city)
+    expect(page).to have_css('.confirm-inner p', text: bill_addr.country.name)
+    expect(page).to have_css('.confirm-inner p', text: bill_addr.phone)
   end
 
   def check_delivery
     expect(page).to have_css('h4', text: humanize(t(:shipments)))
-    expect(page).to have_css('.delivery p', text: order.delivery.company)
-    expect(page).to have_css('.delivery p', text: order.delivery.option)
+    expect(page).to have_css('.confirm-inner p', text: order.delivery.company)
+    expect(page).to have_css('.confirm-inner p', text: order.delivery.option)
   end
 
   def check_payment
     expect(page).to have_css('h4', text: t(:payment_information))
-    expect(page).to have_css('.payment p',
+    expect(page).to have_css('.confirm-inner p',
                              text: order.credit_card.hide_card_number)
-    expect(page).to have_css('.payment p', text: order.credit_card.exp_date)
+    expect(page).to have_css('.confirm-inner p', text: order.credit_card.exp_date)
   end
 
   def check_totals
-    expect(page).to have_css('.pull-right p',
+    expect(page).to have_css('p',
                              text: t(:sub_total_template,
                                      sub_total: order.sub_total))
-    expect(page).to have_css('.pull-right p',
+    expect(page).to have_css('p',
                              text: t(:shipping_template,
                                      shipping: order.shipping))
-    expect(page).to have_css('.pull-right p',
+    expect(page).to have_css('p',
                              text: t(:order_total_template,
                                      total: order.total))
   end

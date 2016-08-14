@@ -37,10 +37,6 @@ module ShoppingCart
       @form.user
     end
 
-    def customer
-      @form.customer
-    end
-
     def order
       @form.order
     end
