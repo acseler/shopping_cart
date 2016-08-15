@@ -1,8 +1,16 @@
 # ShoppingCart
 
 ### Integration
-Add `= stylesheet_link_tag 'shopping_cart/application'` and `= yield :checkout` to your `layouts/application.html`. 
-
+Add `= stylesheet_link_tag 'shopping_cart/application'` and `= yield :checkout` to your `layouts/application.html`.
+Add to your `layouts/application.html` to display messages
+```ruby
+- flash.each do |message_type, message|
+  .alert{ class: "alert-#{message_type}" }
+    - if message.respond_to? :each
+      = message.join(', ')
+    - else
+      = message
+```
 Add
 ```ruby
 mount ShoppingCart::Engine => '/cart'
@@ -66,7 +74,7 @@ COUNTRIES.each do |country|
 end
 ```
 
-### Views and Controllers
+### Views
 
 If you want to edit views, just copy them with command
 ```ruby
@@ -74,7 +82,8 @@ rails generate shopping_cart:cart_views
 ```
 It will generate all views to `app/views/shopping_cart/order_items` and `app/views/shopping_cart/orders` folders.
 Also it generates `app/helpers/shopping_cart/customers_helper.rb` and all presenters in `app/presenters/shopping_cart`.
- 
+
+### Controllers
 If you want to redefine controller's actions, you just need to copy them
 ```ruby
 rails generate shopping_cart:cart_controllers
