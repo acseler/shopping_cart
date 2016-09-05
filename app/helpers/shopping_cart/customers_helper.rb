@@ -33,7 +33,7 @@ module ShoppingCart
     end
 
     def for_merge(field, form, address)
-      attributes = {placeholder: field}
+      attributes = {placeholder: t(field)}
       attributes[:value] = address.send(field) if form
       attributes
     end

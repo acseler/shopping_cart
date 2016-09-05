@@ -8,12 +8,12 @@ module ShoppingCart
     end
 
     def month_options
-      {selected: credit_card.exp_month, include_blank: 'Please Select'}
+      {selected: credit_card.exp_month, include_blank: t(:please_select)}
     end
 
     def year_select(form)
       form.select(:exp_year, options_for_select(years, credit_card.exp_year),
-                  {include_blank: 'Please Select'}, class: 'form-control')
+                  {include_blank: t(:please_select)}, class: 'form-control')
     end
 
     def months
