@@ -44,4 +44,3 @@ exclude_paths:
 - lib/
 - spec/
 - vendor/
-- public/
