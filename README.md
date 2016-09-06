@@ -1,5 +1,9 @@
 # ShoppingCart
 
+[![Build Status](https://travis-ci.org/acseler/shopping_cart.svg?branch=master)](https://travis-ci.org/acseler/shopping_cart)
+[![Code Climate](https://codeclimate.com/github/acseler/shopping_cart/badges/gpa.svg)](https://codeclimate.com/github/acseler/shopping_cart)
+[![Test Coverage](https://codeclimate.com/github/acseler/shopping_cart/badges/coverage.svg)](https://codeclimate.com/github/acseler/shopping_cart/coverage)
+
 ### Integration
 Add `= stylesheet_link_tag 'shopping_cart/application'` and `= yield :checkout` to your `layouts/application.html`.
 Add to your `layouts/application.html` to display messages
