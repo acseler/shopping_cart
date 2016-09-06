@@ -40,6 +40,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'cancancan'
   s.add_development_dependency 'pry'
 
+  s.add_development_dependency 'codeclimate-test-reporter', '0.4.8'
 
   s.test_files = Dir['spec/**/*']
 end

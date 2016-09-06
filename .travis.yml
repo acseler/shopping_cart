@@ -5,7 +5,7 @@ services:
   - postgresql
 addons:
     code_climate:
-        repo_token: 0a2509f2525c9b150ba4eaeb8335ca5e0578c73989e2eeb6d129a032f692db39
+        repo_token: da6a21eb0dc0f0019d5b00f3ff455b34b7bc51882348f3414186b5f6600851fe
 before_script:
   - psql -c 'create database dummy_test;' -U postgres
   - sudo apt-get install libqt4-dev libqtwebkit-dev

@@ -19,6 +19,8 @@ require 'capybara/rspec'
 require 'capybara/rails'
 require 'capybara-webkit'
 require 'capybara/webkit/matchers'
+require 'codeclimate-test-reporter'
+CodeClimate::TestReporter.start
 ActiveRecord::Migration.maintain_test_schema!
 Capybara.javascript_driver = :webkit
 
