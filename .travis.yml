@@ -1,0 +1,14 @@
+language: ruby
+rvm:
+ - 2.3.1
+services:
+  - postgresql
+addons:
+    code_climate:
+        repo_token: 0a2509f2525c9b150ba4eaeb8335ca5e0578c73989e2eeb6d129a032f692db39
+before_script:
+  - psql -c 'create database dummy_test;' -U postgres
+  - sudo apt-get install libqt4-dev libqtwebkit-dev
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3
