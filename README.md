@@ -29,7 +29,7 @@ rake db:migrate
 
 Use `shopping_cart` prefix before all shopping_cart paths
 ```ruby
-  = link_to
+  = link_to shopping_cart.orders_path
 ```
 
 Add `assign_order` method to your ApplicationController
