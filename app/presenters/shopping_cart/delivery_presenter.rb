@@ -4,8 +4,14 @@ module ShoppingCart
     attribute :order_delivery, Delivery
 
     def checked
-      return deliveries.first.id unless order_delivery
+      return delivery_id unless order_delivery
       order_delivery.id
+    end
+
+    private
+
+    def delivery_id
+      deliveries.first.id
     end
   end
 end
