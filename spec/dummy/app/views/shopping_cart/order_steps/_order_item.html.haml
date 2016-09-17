@@ -1,0 +1,12 @@
+.items
+  %p
+    =order_item.product.title
+  %p
+    %span= order_item.currency_price
+  %p
+    = number_field_tag "quantity[#{order_item.id}]", order_item.quantity
+  %p
+    %span= order_item.price_total
+  %p
+    = link_to 'x', order_item_path(order_item), method: :delete
+

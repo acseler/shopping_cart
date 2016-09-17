@@ -1,0 +1,9 @@
+- content_for :checkout do
+  = render 'header'
+
+
+%h4= t(:my_step)
+= form_for @my_step_presenter.my_step, { url: main_app.my_step_order_path, method: :post } do |f|
+  = f.text_field :name, placeholder: t(:name)
+  = render 'order_summary'
+  = f.submit t(:save_and_continue)

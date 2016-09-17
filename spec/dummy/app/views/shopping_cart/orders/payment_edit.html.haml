@@ -1,0 +1,13 @@
+- content_for :checkout do
+  = render 'header'
+
+%h4= t(:credit_card)
+=form_for @payment_presenter.credit_card, url: {controller: 'orders', action: :payment}, method: :put do |f|
+  .payment
+    =f.text_field :number, { placeholder: t(:card_number) }
+    %p= t(:expiration_date)
+    =@payment_presenter.month_select(f)
+    =@payment_presenter.year_select(f)
+    = f.text_field :code, { placeholder: t(:card_code) }
+    = f.submit t(:save_and_continue)
+= render 'order_summary'

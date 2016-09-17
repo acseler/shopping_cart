@@ -1,0 +1,5 @@
+- content_for :checkout do
+  = render 'header'
+
+= render 'confirm_body', title: t(:confirm)
+= button_to t(:place_order), place_order_path, method: :put

@@ -1,0 +1,4 @@
+%h4= @presenter.header
+- if @presenter.has_items
+  = render 'shopping_cart/order_items/header'
+  = render 'shopping_cart/order_items/order_items_form'

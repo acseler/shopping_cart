@@ -62,7 +62,7 @@ feature 'Assign payment' do
 
   def save_and_back
     click_button(t(:save_and_continue))
-    expect(page).to have_css('a.checkout-element', text: t(:confirm))
+    expect(page).to have_css('li span.checkout-element', text: t(:confirm))
     expect(page).to have_css('a.checkout-element', text: t(:payment))
     click_link(t(:payment))
   end

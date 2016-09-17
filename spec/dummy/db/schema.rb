@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160810131417) do
+ActiveRecord::Schema.define(version: 20160914122013) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,6 +72,12 @@ ActiveRecord::Schema.define(version: 20160810131417) do
     t.datetime "updated_at",                         null: false
   end
 
+  create_table "shopping_cart_my_steps", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "shopping_cart_order_items", force: :cascade do |t|
     t.decimal  "price",        precision: 8, scale: 2
     t.integer  "quantity",                             default: 1
@@ -99,7 +105,10 @@ ActiveRecord::Schema.define(version: 20160810131417) do
     t.integer  "coupon_id"
     t.datetime "created_at",                                                null: false
     t.datetime "updated_at",                                                null: false
+    t.integer  "my_step_id"
   end
+
+  add_index "shopping_cart_orders", ["my_step_id"], name: "index_shopping_cart_orders_on_my_step_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false

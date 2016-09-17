@@ -48,8 +48,7 @@ feature 'Checkout addresses' do
     expect(page).to have_css('h4', text: t(:shipping_address))
     expect(page).to have_css('h4', text: t(:order_summary))
     expect(page).to have_css('ul.step-list')
-    expect(page).to have_css('li', text: 'ADDRESS')
-    expect(page).to have_css('li a.checkout-element', text: t(:address))
+    expect(page).to have_css('li span.checkout-element.underlined', text: t(:address))
     expect(page).to have_css("form input[type='text']", count: 12)
     expect(page).to have_css('form select', count: 2)
     expect(page).to have_selector('input[name="use_billing_address[check]"]')
@@ -97,7 +96,7 @@ feature 'Checkout addresses' do
 
   def check_delivery_and_back
     expect(page).to have_css('a.checkout-element', text: t(:address))
-    expect(page).to have_css('a.checkout-element', text: t(:delivery))
+    expect(page).to have_css('li span.checkout-element.underlined', text: t(:delivery))
     click_link(t(:address))
   end
 end

@@ -1,0 +1,8 @@
+%h3= t(:checkout).humanize
+%ul.step-list
+  = @presenter.checkout_title(addresses_order_path, :address)
+  = @presenter.checkout_title(delivery_order_path, :delivery)
+  -#= @presenter.checkout_title(main_app.my_step_order_path, :my_step)
+  = @presenter.checkout_title(payment_order_path, :payment)
+  = @presenter.checkout_title(confirm_order_path, :confirm)
+  = @presenter.complete_title

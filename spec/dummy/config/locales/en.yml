@@ -25,3 +25,5 @@ en:
   add_to_cart: 'ADD TO CART'
   cart: 'Cart'
   empty: 'EMPTY'
+  my_step: 'MY STEP'
+  name: 'Enter your name'

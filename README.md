@@ -17,7 +17,7 @@ Add to your `layouts/application.html` to display messages
 ```
 Add
 ```ruby
-mount ShoppingCart::Engine => '/cart'
+mount ShoppingCart::Engine => '/cart', as: 'cart'
 ```
 to your `config/routes.rb`.
 
@@ -78,6 +78,13 @@ COUNTRIES.each do |country|
 end
 ```
 
+ShoppingCart now have four steps
+
+- Address
+- Delivery
+- Payment
+- Confirm
+
 ### Views
 
 If you want to edit views, just copy them with command
@@ -85,12 +92,289 @@ If you want to edit views, just copy them with command
 rails generate shopping_cart:cart_views
 ```
 It will generate all views to `app/views/shopping_cart/order_items` and `app/views/shopping_cart/orders` folders.
-Also it generates `app/helpers/shopping_cart/customers_helper.rb` and all presenters in `app/presenters/shopping_cart`.
+Also it generates `app/helpers/shopping_cart/customers_helper.rb`.
 
 ### Controllers
 If you want to redefine controller's actions, you just need to copy them
 ```ruby
 rails generate shopping_cart:cart_controllers
 ```
-It will generate `app/controllers/shopping_cart/order_items_controller.rb`, `app/controllers/shopping_cart/orders_controller.rb`, all commands(Rectify gem) in `app/commands/shopping_cart` and all forms(Rectify gem) in `app/forms/shopping_cart`.
+It will generate `app/controllers/shopping_cart/order_items_controller.rb`, `app/controllers/shopping_cart/orders_controller.rb`.
+
+### Forms, Commands and Presenters
+
+ShoppingCart use Rectify gem to separate business logic from controllers. If you want to change this logic, you have to generate that part that you need.
+
+#### Forms
+
+For generating `Rectify forms` you need to execute next line
+
+```ruby
+rails generate shopping_cart:cart_forms
+```
+
+#### Commands
+
+For generating `Rectify commands` you need to execute next line
+
+```ruby
+rails generate shopping_cart:cart_commands
+```
+
+#### Presenters
+
+For generating `Rectify presenter` you need to execute next line
+
+```ruby
+rails generate shopping_cart:cart_presenters
+```
+
+
+### Customizing Steps
+
+##### Create model
+
+If you want to add custom step you have to generate new model for step
+
+```ruby
+rails generate model ShoppingCart::MyStep
+```
+
+Generate `ShoppingCart` models 
+
+```ruby
+rails generate shopping_cart:cart_models
+```
+
+```ruby
+rails generate migration AddMyStepReferenceToOrder
+```
+
+Add code to migration
+
+```ruby
+  def change
+    add_reference :shopping_cart_orders, :my_step, index: true
+  end
+```
+
+Add following code to `ShoppingCart::Order` model
+   
+```ruby
+  belongs_to :my_step, class_name: 'ShoppingCart::MyStep'
+```
+
+##### Create controller and routes
+
+Create module for custom step. And define two actions. `my_step_edit` for editing and `my_step` for submitting data.
+  
+```ruby
+module ShoppingCart
+  module MyStepsController
+    def my_step_edit
+
+    end
+
+    def my_step
+
+    end
+  end
+end
+```
+
+Add routes for `MyStepsController`. Add follow code to `config/routes.rb`
+
+
+```ruby
+resources :orders, module: :shopping_cart, only: [] do
+    member do
+      get 'my_step', action: 'my_step_edit'
+      post 'my_step', action: 'my_step'
+    end
+  end
+```
+
+Now you have controller and routes. 
+
+##### Creating views and presenters
+
+Generate `ShoppingCart` views and presenters
+ 
+```ruby
+  rails generate shopping_cart:cart_views
+  rails generate shopping_cart:cart_presenters
+```
+
+To add step you need to add next code to `app/views/shopping_cart/orders/_header.html.haml`
+
+```ruby
+  = @presenter.checkout_title(main_app.my_step_order_path, :my_step)
+```
+
+Also you have to create `my_step?` method and edit `confirm?` method to `app/presenters/checkout_presenter.rb`.
+
+```ruby
+    # Name of methos should be similar to second argument of `checkout_title(main_app.my_step_order_path, :my_step)`
+    def my_step?
+      order.my_step
+    end
+    
+    def confirm?
+      address? && delivery? && payment? && my_step? 
+    end
+```
+
+Add localization for your step to `config/locales/en.yml`
+
+```ruby
+  my_step: 'MY STEP'
+```
+
+Now you need to define your controllers. `app/controllers/shopping_cart/orders_controller.rb` contains `order_addresses, delivery, payment` methods. Choose method after which you want to put your step. You need to change following code. 
+
+```ruby
+  Command.call(form) do
+    on(:ok) { redirect_to next_step_path }
+    on(:invalid) { redirect_to current_step_path }
+  end
+```
+To
+```ruby
+    Command.call(form) do
+      on(:ok) { redirect_to main_app.my_step_order_path }
+      on(:invalid) { redirect_to current_step_path }
+    end
+```
+
+Steps path you can finding out after executing `rake routes`
+
+After you need to create `app/views/shopping_cart/orders/my_step_edit.html.haml`, the name of view must be similar as `my_step_controller.rb` method `my_step_edit`.
+You can create your own presenter for your controller. Read `Rectify` documentation about it https://github.com/andypike/rectify
+
+##### Presenter example
+Create presenter at `app/presenters/shopping_cart/my_step_presenter.rb`
+```ruby
+module ShoppingCart
+  class MyStepPresenter < Rectify::Presenter
+    attribute :order, ShoppingCart::Order
+    attribute :my_step, ShoppingCart::MyStep
+  end
+end
+```
+
+Add following code to your `my_step_edit` action in controller. Do not call your presenter as `@presenter`, it's reserved by `ShoppingCart::OrdersController`. 
+```ruby
+module ShoppingCart::MySteps
+  def my_step_edit
+    my_step = @order.my_step || ShoppingCart::MyStep.new
+    @my_step_presenter = ShoppingCart::MyStepPresenter.new(order: @order,
+                                                           my_step: my_step)
+                             .attach_controller(self)
+  end
+end
+```
+
+##### View example
+ 
+Add following code to `app/views/shopping_cart/orders/my_step_edit.html.haml` to render steps. 
+```ruby
+     - content_for :checkout do
+       = render 'header'
+```
+
+Add form for `MyStep` model to `app/views/shopping_cart/orders/my_step_edit.html.haml`. For example model has only `name` column.
+Also you have access to `_order_summary.html.haml` template.
+
+```ruby
+    %h4= t(:my_step)
+    = form_for @my_step_presenter.my_step, { url: main_app.my_step_order_path, method: :post } do |f|
+      = f.text_field :name, placeholder: t(:name)
+      = render 'order_summary'
+      = f.submit t(:save_and_continue)
+```
+ 
+##### Forms and commands
+
+Create `app/forms/shopping_cart/my_step_form.rb`
+ 
+```ruby
+    module ShoppingCart
+      class MyStepForm < Rectify::Form
+        attribute :name, String
+        attribute :order, ShoppingCart::Order
+    
+        validates :name, presence: true
+      end
+    end
+```
+
+Create command `app/commands/shopping_cart/my_step_form.rb`.
+
+```ruby
+module ShoppingCart
+  class AddMyStep < ShoppingCart::BaseCommand
+    def name
+      :add_my_step
+    end
+
+    private
+
+    def add_my_step
+      attr = attr_except(:order)
+      order.my_step = MyStep.create(attr)
+      order.save
+    end
+  end
+end
+```
+
+Method `name` must contain symbol of business logic method. Use `attr_except(:attr)` method to exclude odd attributes from form.
+
+Now specify `my_step` action 
+
+```ruby
+  def my_step
+    form = ShoppingCart::MyStepForm.from_params(params)
+    form.order = @order
+    ShoppingCart::AddMyStep.call(form) do
+      on(:ok) { redirect_to next_step_path }
+      on(:invalid) { redirect_to main_app.my_step_order_path }
+    end
+  end
+```
+
+And finally create template `app/views/shopping_cart/orders/_confirm_my_step.html.haml` for your step to render it on confirm page
+
+```ruby
+.confirm-inner
+  %h4= t(:my_step)
+  %p= @confirm_presenter.order.my_step.name
+```
+
+To not break `Law of Demeter`, create `my_step_name` method in `app/presenters/confirm_presenter.rb`
+  
+```ruby
+    def my_step_name
+      order.my_step.name
+    end
+```  
+
+Now view looks better.
+
+```ruby
+.confirm-inner
+  %h4= t(:my_step)
+  %p= @confirm_presenter.my_step_name
+``` 
+
+Add following code to `app/views/shopping_cart/orders/_conform_body.html.html`, between steps you defined your step.
+ 
+```ruby
+  =render 'confirm_my_step'
+``` 
+
+Congratulation, now you have your own step in `ShoppingCart` :). 
+
+
+
 

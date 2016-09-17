@@ -1,0 +1,16 @@
+= form_tag order_items_path, method: :put do
+  = render @presenter.items
+  - if @presenter.coupon?
+    %p
+      %span= t(:discount)
+      = @presenter.discount
+  %p
+    %span= t(:subtotal)
+    = @presenter.sub_total
+  .order-edit-links
+    = @presenter.empty_cart_link
+    = @presenter.continue_shopping_link
+    - unless @presenter.coupon?
+      = text_field_tag :coupon, nil, placeholder: t(:coupon_code)
+    = submit_tag t(:update)
+    = link_to t(:checkout), addresses_order_path(@order), "data-no-turbolink": true

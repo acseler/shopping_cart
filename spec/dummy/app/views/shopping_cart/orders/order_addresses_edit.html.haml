@@ -1,0 +1,21 @@
+- content_for :checkout do
+  = render 'header'
+
+= form_tag address_order_path, method: :put do
+  .address
+    %div
+      = fields_for :billing_address do |ff|
+        %h4.text-center= t(:billing_address)
+        = draw_address(:billing_address, ff)
+      = submit_tag t(:save_and_continue)
+    %div
+      = fields_for :shipping_address do |ff|
+        %h4.text-center= t(:shipping_address)
+        #shipping_address
+          = draw_address(:shipping_address, ff)
+      = fields_for :use_billing_address do |ff|
+        = ff.check_box :check
+        = ff.label :check, t(:use_billing_address), id: :use_billing_address
+  %h4.text-right= t(:order_summary)
+  %p= t(:item_total, sub_total: @presenter.price(:sub_total_price))
+  %p= t(:order_total_template, total: @presenter.price(:total_price))

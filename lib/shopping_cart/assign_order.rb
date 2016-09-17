@@ -16,6 +16,10 @@ module ShoppingCart
           def put_order
             @order = current_user.orders_in_progress.first_or_create if current_user
           end
+
+          def cart
+            ShoppingCart::Engine.routes.url_helpers
+          end
         end
       end
     end
