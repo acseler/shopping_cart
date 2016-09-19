@@ -78,7 +78,7 @@ COUNTRIES.each do |country|
 end
 ```
 
-ShoppingCart now have four steps
+ShoppingCart now has four steps
 
 - Address
 - Delivery
@@ -103,7 +103,7 @@ It will generate `app/controllers/shopping_cart/order_items_controller.rb`, `app
 
 ### Forms, Commands and Presenters
 
-ShoppingCart use Rectify gem to separate business logic from controllers. If you want to change this logic, you have to generate that part that you need.
+ShoppingCart uses Rectify gem to separate business logic from controllers. If you want to change this logic, you have to generate part you need.
 
 #### Forms
 
@@ -134,7 +134,7 @@ rails generate shopping_cart:cart_presenters
 
 ##### Create model
 
-If you want to add custom step you have to generate new model for step
+If you want to add custom step you have to generate a new model for step
 
 ```ruby
 rails generate model ShoppingCart::MyStep
@@ -166,7 +166,7 @@ Add following code to `ShoppingCart::Order` model
 
 ##### Create controller and routes
 
-Create module for custom step. And define two actions. `my_step_edit` for editing and `my_step` for submitting data.
+Create module for custom step. And define two actions. `my_step_edit` for editing and `my_step` submitting data.
   
 ```ruby
 module ShoppingCart
@@ -230,7 +230,7 @@ Add localization for your step to `config/locales/en.yml`
   my_step: 'MY STEP'
 ```
 
-Now you need to define your controllers. `app/controllers/shopping_cart/orders_controller.rb` contains `order_addresses, delivery, payment` methods. Choose method after which you want to put your step. You need to change following code. 
+Now you need to define your controllers. `app/controllers/shopping_cart/orders_controller.rb` contains `order_addresses, delivery, payment` methods. Choose method after which you want to put your step. You need to change the following code. 
 
 ```ruby
   Command.call(form) do
@@ -246,9 +246,9 @@ To
     end
 ```
 
-Steps path you can finding out after executing `rake routes`
+You can find out the steps path after executing `rake routes`
 
-After you need to create `app/views/shopping_cart/orders/my_step_edit.html.haml`, the name of view must be similar as `my_step_controller.rb` method `my_step_edit`.
+Than you need to create `app/views/shopping_cart/orders/my_step_edit.html.haml`, the name of view must be similar to `my_step_controller.rb` method `my_step_edit`.
 You can create your own presenter for your controller. Read `Rectify` documentation about it https://github.com/andypike/rectify
 
 ##### Presenter example
@@ -262,7 +262,7 @@ module ShoppingCart
 end
 ```
 
-Add following code to your `my_step_edit` action in controller. Do not call your presenter as `@presenter`, it's reserved by `ShoppingCart::OrdersController`. 
+Add following code to your `my_step_edit` action in controller. Do not call your presenter `@presenter`, it's reserved by `ShoppingCart::OrdersController`. 
 ```ruby
 module ShoppingCart::MySteps
   def my_step_edit
@@ -351,7 +351,7 @@ And finally create template `app/views/shopping_cart/orders/_confirm_my_step.htm
   %p= @confirm_presenter.order.my_step.name
 ```
 
-To not break `Law of Demeter`, create `my_step_name` method in `app/presenters/confirm_presenter.rb`
+In order not to break `Law of Demeter`, create `my_step_name` method in `app/presenters/confirm_presenter.rb`
   
 ```ruby
     def my_step_name
@@ -367,7 +367,7 @@ Now view looks better.
   %p= @confirm_presenter.my_step_name
 ``` 
 
-Add following code to `app/views/shopping_cart/orders/_conform_body.html.html`, between steps you defined your step.
+Add following code to `app/views/shopping_cart/orders/_conform_body.html.html`, between steps you defined.
  
 ```ruby
   =render 'confirm_my_step'
